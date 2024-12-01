@@ -4,13 +4,13 @@ import numpy as np
 from stable_baselines3 import DQN
 from stable_baselines3.common.vec_env import SubprocVecEnv
 from sb3_contrib.common.wrappers import ActionMasker
-from wrap_2 import SnakeEnv
+from wrap import SnakeEnv
 import time
 
 NUM_ENVS = 32
 LOG_DIR = "logs"
 MODEL_DIR = "models"
-TOTAL_TIMESTEPS = 3_000_000
+TOTAL_TIMESTEPS = 20_000_000 #200_000_000 300_000_000
 
 def create_action_mask(env):
     return env.get_action_mask()
@@ -36,16 +36,16 @@ def configure_dqn_model(envs):
     return DQN(
         "CnnPolicy",
         envs,
-        learning_rate=linear_schedule(2.5e-4, 2.5e-6),
-        buffer_size=5000,
-        learning_starts=1000,
+        learning_rate=linear_schedule(2.5e-4, 2.5e-6), # 1e-4, 1e-6
+        buffer_size=10000,
+        learning_starts=1000, # 5000
         batch_size=512,
         tau=0.1,
-        gamma=0.9,
-        train_freq=4,
-        target_update_interval=1000,
-        exploration_fraction=0.8,
-        exploration_final_eps=0.02,
+        gamma=0.98, # 0.96
+        train_freq=8, # 4
+        target_update_interval=1000, # 5000
+        exploration_fraction=0.75, # 0.8 0.9
+        exploration_final_eps=0.01, # 0.01 0.005
         verbose=1,
         tensorboard_log=LOG_DIR,
         device="cuda"
@@ -61,7 +61,7 @@ def main():
     time_start = time.time()
     train_model(model, TOTAL_TIMESTEPS, MODEL_DIR)
     time_use = time.time() - time_start
-    print(f"Training time: {time_use:.2f} seconds")
+    print(f"Training time: {(time_use / 3600 ):.2f} hours")
     envs.close()
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ import numpy as np
 from stable_baselines3 import DQN
 from stable_baselines3.common.vec_env import SubprocVecEnv
 from sb3_contrib.common.wrappers import ActionMasker
-from wrap_2 import SnakeEnv
+from wrap import SnakeEnv
 import time
 
 NUM_ENVS = 32

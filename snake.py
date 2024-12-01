@@ -18,7 +18,7 @@ import pygame
 from pygame import mixer
 
 class SnakeGame:
-    def __init__(self, seed=522117, board_size=12, silent_mode=True):
+    def __init__(self, seed=522117, board_size=20, silent_mode=True):
         self.board_size = board_size
         self.grid_size = self.board_size ** 2
         self.cell_size = 40
@@ -144,11 +144,15 @@ class SnakeGame:
             food = (0, 0)
         return food
     
+    # def draw_score(self):
+    #     score_text = self.font.render(f'Score: {self.score}', True, (255, 255, 255))
+    #     score_rect = score_text.get_rect(center=(self.display_width // 2, self.border_size // 2))
+    #     self.screen.blit(score_text, score_rect)
     def draw_score(self):
-        score_text = self.font.render(f'Score: {self.score}', True, (255, 255, 255))
+        score_text = self.font.render(f'Score: {self.score}', True, (0, 0, 0))  # Black color
         score_rect = score_text.get_rect(center=(self.display_width // 2, self.border_size // 2))
         self.screen.blit(score_text, score_rect)
-    
+        
     def draw_welcome_screen(self):
         start_button_text = "START"
 
@@ -194,25 +198,49 @@ class SnakeGame:
         )
         return text_rect.collidepoint(mouse_pos)
 
-    def render(self):
-        self.screen.fill((0, 0, 0))
+    # def render(self):
+    #     self.screen.fill((0, 0, 0))
         
+    #     # Draw score
+    #     self.draw_score()
+
+    #     # Draw border
+    #     pygame.draw.rect(self.screen, (255, 255, 255), (self.border_size - 2, self.border_size - 2, self.width + 4, self.height + 4), 2)
+
+    #     # Draw snake
+    #     self.draw_snake()
+
+    #     # Draw food
+    #     if len(self.snake) < self.grid_size: # If the snake occupies the entire board, don't draw food.
+    #         r, c = self.food
+    #         pygame.draw.rect(self.screen, (255, 0, 0), (c * self.cell_size + self.border_size, r * self.cell_size + self.border_size, self.cell_size, self.cell_size))
+
+    #     pygame.display.flip()
+        
+    #     for event in pygame.event.get():
+    #         if event.type == pygame.QUIT:
+    #             pygame.quit()
+    #             sys.exit()
+                
+    def render(self):
+        self.screen.fill((255, 255, 255))  # White background
+
         # Draw score
         self.draw_score()
 
         # Draw border
-        pygame.draw.rect(self.screen, (255, 255, 255), (self.border_size - 2, self.border_size - 2, self.width + 4, self.height + 4), 2)
+        pygame.draw.rect(self.screen, (0, 0, 0), (self.border_size - 2, self.border_size - 2, self.width + 4, self.height + 4), 2)  # Black color
 
         # Draw snake
         self.draw_snake()
 
         # Draw food
-        if len(self.snake) < self.grid_size: # If the snake occupies the entire board, don't draw food.
+        if len(self.snake) < self.grid_size:  # If the snake occupies the entire board, don't draw food.
             r, c = self.food
             pygame.draw.rect(self.screen, (255, 0, 0), (c * self.cell_size + self.border_size, r * self.cell_size + self.border_size, self.cell_size, self.cell_size))
 
         pygame.display.flip()
-        
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -284,6 +312,10 @@ class SnakeGame:
                 color = (255, color_list[index], 0)
             pygame.draw.rect(self.screen, color, (body_x, body_y, body_width, body_height))
             i += 1
+    
+    def get_frame(self):
+        """返回当前帧的 RGB 图像数据"""
+        return pygame.surfarray.array3d(self.screen).swapaxes(0, 1)
         
 
 if __name__ == "__main__":
