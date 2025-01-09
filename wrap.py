@@ -147,7 +147,7 @@ class SnakeEnv(gym.Env):
             # Set the food to red
             obs[self.game.food] = [0, 0, 255]
 
-            # Enlarge the observation to 84x84
+            # Enlarge the observation
             obs = np.repeat(np.repeat(obs, 5, axis=0), 5, axis=1)
         else:
             obs = np.zeros((self.game.board_size, self.game.board_size), dtype=np.float32)

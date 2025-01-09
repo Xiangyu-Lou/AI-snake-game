@@ -7,10 +7,10 @@ from stable_baselines3.common.vec_env import DummyVecEnv
 from wrap import SnakeEnv
 import moviepy.editor as mpy
 
-MODEL_PATH = r"models/backup/deep_q_learning_cnn.zip"
-NUM_EPISODES = 50
+MODEL_PATH = r"models/deep_q_learning_cnn_size20_20"
+NUM_EPISODES = 1
 SILENT_MODE = False
-FRAME_DELAY = 0.002
+FRAME_DELAY = 0.004
 ROUND_DELAY = 0
 VIDEO_OUTPUT_DIR = "videos"
 RECORD_VIDEO = False
@@ -33,7 +33,8 @@ def save_video(frames, filename, fps=30):
 
 def main():
     seed = random.randint(0, np.random.randint(1e9))
-    print(f"Using seed = {seed} for testing.")
+    seed = 625265669
+    # print(f"Using seed = {seed} for testing.")
 
     env = initialize_environment(seed, limit_step=True, silent_mode=SILENT_MODE)
     model = DQN.load(MODEL_PATH, env=env)
@@ -66,7 +67,7 @@ def main():
         max_score = max(max_score, episode_score)
         
         # only save video for episodes with score greater than 58
-        if RECORD_VIDEO and episode_score > 58:
+        if RECORD_VIDEO and episode_score < 3:
             video_filename = f"{episode_score}.mp4"
             save_video(frames, video_filename)
 

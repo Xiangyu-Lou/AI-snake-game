@@ -5,7 +5,7 @@ Original Project URL: https://github.com/linyiLYi/snake-ai
 Original Author: linyiLYi
 
 Modification:
-1. Changed the way to update game state, from time-based to input-based.
+1. Changed the way to update game state.
 2. Modified rendering snake style   
 """
 
@@ -314,7 +314,7 @@ class SnakeGame:
             i += 1
     
     def get_frame(self):
-        """返回当前帧的 RGB 图像数据"""
+        """return the current game screen as a numpy array"""
         return pygame.surfarray.array3d(self.screen).swapaxes(0, 1)
         
 
@@ -400,7 +400,7 @@ if __name__ == "__main__":
             if has_new_input:
                 done, _ = game.step(action)
                 game.render()
-                has_new_input = False  # 重置输入标志
+                has_new_input = False
 
                 if done:
                     game_state = "game_over"
